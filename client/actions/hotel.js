@@ -19,3 +19,21 @@ export const diffDays = (from, to) => {
   const difference = Math.round(Math.abs((start - end) / day));
   return difference;
 };
+
+export const sellerHotels = async (token) =>
+  await axios.get(`http://localhost:8000/api/seller-hotels`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const deleteHotel = async (token, hotelId) =>
+  await axios.delete(`http://localhost:8000/api/delete-hotel/${hotelId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+export const getSingleHotelData = async (hotelId) => {
+  await axios.get(`http://localhost:8000/api/hotel/${hotelId}`);
+};

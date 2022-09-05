@@ -11,7 +11,7 @@ const ConnectNav = () => {
 
   return (
     <div className="d-flex justify-content-around">
-      <Card>
+      <Card className="bg-warning">
         {user && (
           <Meta
             avatar={<Avatar>{user.name[0]}</Avatar>}

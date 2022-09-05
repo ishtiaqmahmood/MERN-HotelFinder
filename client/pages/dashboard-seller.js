@@ -8,10 +8,13 @@ import ConnectNav from "../components/ConnectNav.js";
 import { HomeOutlined } from "@ant-design/icons";
 import { createConnectAccount } from "../actions/stripe.js";
 import { toast } from "react-toastify";
+import { sellerHotels, deleteHotel } from "../actions/hotel.js";
+import SmallCard from "../components/cards/SmallCard.js";
 
 const seller = () => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
+  const [hotels, setHotels] = useState([]);
 
   const ProtectedRoute = () => {
     if (typeof window !== "undefined") {
@@ -26,6 +29,15 @@ const seller = () => {
     ProtectedRoute();
   }, []);
 
+  const loadSellerHotels = async () => {
+    let res = await sellerHotels(auth.token);
+    setHotels(res.data);
+  };
+
+  useEffect(() => {
+    loadSellerHotels();
+  }, []);
+
   const handleClick = async () => {
     setLoading(true);
     try {
@@ -36,6 +48,14 @@ const seller = () => {
       toast.error("Stripe connect failed, Try again");
       setLoading(false);
     }
+  };
+
+  const handleHotelDelete = async (hotelId) => {
+    if (!window.confirm("Are you sure?")) return;
+    deleteHotel(auth.token, hotelId).then((res) => {
+      toast.success("Hotel deleted");
+      loadSellerHotels();
+    });
   };
 
   const connected = () => {
@@ -50,6 +70,17 @@ const seller = () => {
               <button className="btn btn-primary">+ Add New</button>
             </Link>
           </div>
+        </div>
+        <div className="row">
+          {hotels.map((h) => (
+            <SmallCard
+              key={h._id}
+              h={h}
+              showViewMoreButton={false}
+              owner={true}
+              handleHotelDelete={handleHotelDelete}
+            />
+          ))}
         </div>
       </div>
     );
@@ -86,7 +117,7 @@ const seller = () => {
   return (
     <div>
       <TopNav />
-      <div className="container-fluid bg-secondary p-5 text-center">
+      <div className="container-fluid bg-warning p-5 text-center">
         <ConnectNav />
       </div>
       <div className="container-fluid p-2">

@@ -25,7 +25,7 @@ const dashboard = () => {
   return (
     <>
       <TopNav />
-      <div className="container-fluid bg-secondary p-5 text-center">
+      <div className="container-fluid bg-warning p-5 text-center">
         <ConnectNav />
       </div>
       <div className="container-fluid p-2">
