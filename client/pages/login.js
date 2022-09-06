@@ -5,6 +5,7 @@ import { Login } from "../actions/auth";
 import LoginForm from "../components/LoginForm";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const login = () => {
   const [email, setEmail] = useState("");
@@ -44,8 +45,8 @@ const login = () => {
 
   return (
     <>
-      <div className="container-fluid bg-danger p-5 text-center">
-        <h1>Login</h1>
+      <div className="container-fluid bg-warning p-5 text-center">
+        <h1>Login Page</h1>
       </div>
 
       <div className="container">
@@ -58,6 +59,10 @@ const login = () => {
               password={password}
               setPassword={setPassword}
             />
+            <br />
+            <Link href="/register">
+              <a>Not yet registerd? Click here for registration</a>
+            </Link>
           </div>
         </div>
       </div>

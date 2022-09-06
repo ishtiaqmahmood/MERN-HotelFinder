@@ -37,3 +37,14 @@ export const deleteHotel = async (token, hotelId) =>
 export const getSingleHotelData = async (hotelId) => {
   await axios.get(`http://localhost:8000/api/hotel/${hotelId}`);
 };
+
+export const updateHotel = async (token, data, hotelId) => {
+  await axios.put(`http://localhost:8000/api/update-hotel/${hotelId}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const searchListings = async (query) =>
+  await axios.post(`http://localhost:8000/api/search-listings`, query);

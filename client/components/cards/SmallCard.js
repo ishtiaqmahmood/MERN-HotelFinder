@@ -55,7 +55,12 @@ const SmallCard = ({
               {showViewMoreButton && (
                 <button
                   className="btn btn-primary"
-                  onClick={() => Router.push(`/hotel/${h._id}`)}
+                  onClick={() =>
+                    Router.push({
+                      pathname: `/hotel/`,
+                      query: { name: `${h._id}` },
+                    })
+                  }
                 >
                   Show more
                 </button>

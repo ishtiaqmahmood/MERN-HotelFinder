@@ -7,6 +7,8 @@ import {
   sellerHotels,
   removeHotel,
   getSingleHotelData,
+  updateHotelData,
+  searchListings,
 } from "../controllers/hotel";
 import { requireSignin, hotelOwner } from "../middlewares";
 
@@ -18,5 +20,13 @@ router.get("/hotel/image/:hotelId", hotelImage);
 router.get("/seller-hotels", requireSignin, sellerHotels);
 router.delete("/delete-hotel/:hotelId", requireSignin, hotelOwner, removeHotel);
 router.get("/hotel/:hotelId", getSingleHotelData);
+router.put(
+  "/update-hotel/:hotelId",
+  requireSignin,
+  hotelOwner,
+  formidable(),
+  updateHotelData
+);
+router.post("/search-listings", searchListings);
 
 module.exports = router;

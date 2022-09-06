@@ -63,8 +63,48 @@ export const removeHotel = async (req, res) => {
 
 export const getSingleHotelData = async (req, res) => {
   let getdata = await Hotel.findById(req.params.hotelId)
+    .populate("postedBy", "_id name")
     .select("-image.data")
     .exec();
   console.log("Single hotel data >>> ", getdata);
   res.json(getdata);
+};
+
+export const updateHotelData = async (req, res) => {
+  try {
+    let fields = req.fields;
+    let files = req.files;
+    let data = { ...fields };
+
+    if (files.image) {
+      let image = {};
+      image.data = fs.readFileSync(files.image.path);
+      image.contentType = files.image.type;
+      data.image = image;
+    }
+
+    let updated = await Hotel.findByIdAndUpdate(req.params.hotelId, data, {
+      new: true,
+    }).select("-image.data");
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("Hotel update failed. Try again.");
+  }
+};
+
+export const searchListings = async (req, res) => {
+  const { location, date, bed } = req.body;
+  console.log(location, bed, date);
+  const formDate = date.split(",");
+  let result = await Hotel.find({
+    from: { $gte: new Date() },
+    location,
+  })
+    .select("-image.data")
+    .exec();
+
+  console.log(result);
+  res.json(result);
 };

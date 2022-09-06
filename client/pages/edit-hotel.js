@@ -4,10 +4,10 @@ import AlgoliaPlaces from "algolia-places-react";
 import Image from "next/image";
 import { DatePicker, Select } from "antd";
 import moment from "moment/moment";
-import { getSingleHotelData } from "../actions/hotel";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useRouter } from "next/router";
+import TopNav from "../components/TopNav";
 
 const { Option } = Select;
 const config = {
@@ -19,25 +19,25 @@ const config = {
 
 const editHotel = () => {
   const { auth } = useSelector((state) => ({ ...state }));
+  const { token } = auth;
   const router = useRouter();
 
   const [values, setValues] = useState({
     title: "",
     content: "",
-    image: "",
     price: "",
     from: "",
     to: "",
     bed: "",
     location: "",
   });
-
+  const [image, setImage] = useState("");
   const [preview, setPreview] = useState(
     "https://via.placeholder.com/100x100.png?text=PREVIEW"
   );
 
   // destructuring variables from state
-  const { title, content, image, price, location, from, to, bed } = values;
+  const { title, content, price, location, from, to, bed } = values;
 
   const loadSellerHotel = async () => {
     const hotelId = router.query.name;
@@ -66,12 +66,42 @@ const editHotel = () => {
     ProtectedRoute();
   }, []);
 
-  const handleSubmit = async (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let hotelData = new FormData();
+    hotelData.append("title", title);
+    hotelData.append("content", content);
+    hotelData.append("location", location);
+    hotelData.append("price", price);
+    image && hotelData.append("image", image);
+    hotelData.append("bed", bed);
+    hotelData.append("from", from);
+    hotelData.append("to", to);
+
+    try {
+      //let res = await updateHotel(token, hotelData, router.query.name);
+      const hotelId = router.query.name;
+      let res = await axios.put(
+        `http://localhost:8000/api/update-hotel/${hotelId}`,
+        hotelData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Hotel update res >>> ", res);
+      toast.success(`${res.data.title} is updated`);
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.err);
+    }
+  };
 
   const handleImageChange = (e) => {
     // console.log(e.target.files[0]);
     setPreview(URL.createObjectURL(e.target.files[0]));
-    setValues({ ...values, image: e.target.files[0] });
+    setImage(e.target.files[0]);
   };
 
   const handleChange = (e) => {
@@ -171,6 +201,7 @@ const editHotel = () => {
 
   return (
     <>
+      <TopNav />
       <div className="container-fluid bg-info p-5 text-center">
         <h2>Edit hotel</h2>
       </div>

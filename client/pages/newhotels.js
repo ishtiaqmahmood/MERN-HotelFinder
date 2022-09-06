@@ -6,6 +6,7 @@ import { DatePicker, Select } from "antd";
 import moment from "moment/moment";
 import { createHotel } from "../actions/hotel";
 import { useSelector } from "react-redux";
+import TopNav from "../components/TopNav";
 
 const config = {
   appId: process.env.REACT_APP_ALGOLIA_APP_ID,
@@ -177,6 +178,7 @@ const newhotels = () => {
   );
   return (
     <>
+      <TopNav />
       <div className="container-fluid bg-danger p-5 text-center">
         <h2>Add Hotel</h2>
       </div>

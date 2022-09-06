@@ -8,7 +8,7 @@ import ConnectNav from "../components/ConnectNav";
 
 const dashboard = () => {
   const { auth } = useSelector((state) => ({ ...state }));
-  const { user } = auth;
+  //const { user } = auth;
 
   const ProtectedRoute = () => {
     if (typeof window !== "undefined") {

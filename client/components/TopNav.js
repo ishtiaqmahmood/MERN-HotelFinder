@@ -24,7 +24,7 @@ const TopNav = () => {
       {auth !== null && (
         <div>
           <Link className="nav-link" href="/dashboard">
-            <a className="text-decoration-none">dashboard</a>
+            <a className="text-decoration-none">Dashboard</a>
           </Link>
         </div>
       )}

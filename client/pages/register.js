@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { Register } from "../actions/auth";
+import Link from "next/link";
 
 function register() {
   const [name, setName] = useState("");
@@ -30,8 +31,8 @@ function register() {
   };
   return (
     <>
-      <div className="container-fluid bg-danger p-5 text-center">
-        <h1>Register</h1>
+      <div className="container-fluid bg-warning p-5 text-center">
+        <h1>Register Page</h1>
       </div>
       <div className="container mt-3">
         <div className="row">
@@ -45,6 +46,10 @@ function register() {
               password={password}
               setPassword={setPassword}
             />
+            <br />
+            <Link href="/login">
+              <a>Are you a registed user? Click here for Login</a>
+            </Link>
           </div>
         </div>
       </div>
